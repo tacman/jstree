@@ -12,8 +12,8 @@ module.exports = function(grunt) {
         separator : "\n"
       },
       dist: {
-        src: ['src/<%= pkg.name %>.js', 'src/<%= pkg.name %>.*.js', 'src/vakata-jstree.js'],
-        dest: 'dist/<%= pkg.name %>.js'
+        src: ['src/<%= pkg.buildName %>.js', 'src/<%= pkg.buildName %>.*.js', 'src/vakata-jstree.js'],
+        dest: 'dist/<%= pkg.buildName %>.js'
       }
     },
     copy: {
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['<%= concat.dist.dest %>'],
-        dest: 'dist/<%= pkg.name %>.min.js'
+        dest: 'dist/<%= pkg.buildName %>.min.js'
       }
     },
     jshint: {
@@ -70,8 +70,8 @@ module.exports = function(grunt) {
           'ActiveXObject' : true
         }
       },
-      beforeconcat: ['src/<%= pkg.name %>.js', 'src/<%= pkg.name %>.*.js'],
-      afterconcat: ['dist/<%= pkg.name %>.js']
+      beforeconcat: ['src/<%= pkg.buildName %>.js', 'src/<%= pkg.buildName %>.*.js'],
+      afterconcat: ['dist/<%= pkg.buildName %>.js']
     },
     dox: {
       files: {
