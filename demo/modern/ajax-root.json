@@ -1,0 +1,34 @@
+[
+  {
+    "id": "team",
+    "text": "Team",
+    "state": { "opened": true },
+    "children": [
+      {
+        "id": "eng",
+        "text": "Engineering",
+        "children": [
+          { "id": "eng-api", "text": "API" },
+          { "id": "eng-web", "text": "Web" },
+          { "id": "eng-mobile", "text": "Mobile" }
+        ]
+      },
+      {
+        "id": "design",
+        "text": "Design",
+        "children": [
+          { "id": "design-system", "text": "System" },
+          { "id": "design-research", "text": "Research" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ops",
+    "text": "Operations",
+    "children": [
+      { "id": "ops-sre", "text": "SRE" },
+      { "id": "ops-support", "text": "Support" }
+    ]
+  }
+]

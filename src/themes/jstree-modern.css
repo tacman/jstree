@@ -1,0 +1,512 @@
+/* Modern jstree CSS - Pure CSS with Grid/Flexbox layout */
+
+/* IMPORT: Make sure we load after default theme to override properly */
+
+/* Modern tree structure - target both default and standalone */
+.jstree-default .jstree-node,
+.jstree-default .jstree-children,
+.jstree-default .jstree-container-ul,
+.jstree-node,
+.jstree-children,
+.jstree-container-ul {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jstree-default .jstree-node,
+.jstree-node {
+  display: grid;
+  grid-template-columns: var(--jstree-icon-size) var(--jstree-icon-size) 1fr;
+  grid-template-areas: "arrow icon text";
+  align-items: center;
+  gap: var(--jstree-icon-margin);
+  min-height: var(--jstree-icon-size);
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.jstree-default .jstree-anchor,
+.jstree-anchor {
+  display: flex;
+  align-items: center;
+  color: var(--jstree-text-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: var(--jstree-icon-size);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background: transparent;
+  margin: 0;
+  vertical-align: top;
+  grid-area: text;
+}
+
+.jstree-default .jstree-icon,
+.jstree-icon {
+  width: var(--jstree-icon-size);
+  height: var(--jstree-icon-size);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: top;
+}
+
+.jstree-default .jstree-ocl,
+.jstree-ocl {
+  grid-area: arrow;
+  background-image: var(--jstree-arrow-right);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+.jstree-default .jstree-ocl:hover,
+.jstree-ocl:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3) !important;
+}
+
+.jstree-default.jstree-open .jstree-ocl,
+.jstree-open .jstree-ocl {
+  background-image: var(--jstree-arrow-down);
+}
+
+.jstree-default.jstree-leaf .jstree-ocl,
+.jstree-leaf .jstree-ocl {
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+.jstree-default .jstree-themeicon,
+.jstree-themeicon {
+  grid-area: icon;
+  background-image: var(--jstree-folder);
+  margin-right: 0;
+}
+
+.jstree-default.jstree-open .jstree-themeicon,
+.jstree-open .jstree-themeicon {
+  background-image: var(--jstree-folder-open);
+}
+
+.jstree-default.jstree-leaf .jstree-themeicon,
+.jstree-default .jstree-themeicon.jstree-file,
+.jstree-leaf .jstree-themeicon,
+.jstree-themeicon.jstree-file {
+  background-image: var(--jstree-file);
+}
+
+.jstree-default .jstree-node > .jstree-children,
+.jstree-node > .jstree-children {
+  grid-column: span 3;
+  margin-left: calc(var(--jstree-icon-size) + var(--jstree-icon-margin) * 2);
+  margin-top: 2px;
+  display: none;
+}
+
+.jstree-default .jstree-node.jstree-open > .jstree-children,
+.jstree-node.jstree-open > .jstree-children {
+  display: flex;
+}
+
+/* Children structure */
+.jstree-node {
+  white-space: nowrap;
+}
+
+.jstree-container-ul > .jstree-node {
+  grid-template-columns: var(--jstree-icon-size) var(--jstree-icon-size) 1fr !important;
+}
+
+/* Hover and selection states */
+.jstree-node:hover {
+  background-color: var(--jstree-bg-hover) !important;
+  transform: translateX(2px) !important;
+}
+
+.jstree-anchor:hover,
+.jstree-hovered .jstree-anchor {
+  background-color: var(--jstree-bg-hover) !important;
+}
+
+.jstree-clicked .jstree-anchor,
+.jstree-selected .jstree-anchor {
+  background-color: var(--jstree-bg-selected) !important;
+  font-weight: 600 !important;
+}
+
+.jstree-anchor:focus {
+  outline: 2px solid #2196F3 !important;
+  outline-offset: 1px !important;
+}
+
+/* CSS Custom Properties for theming */
+:root {
+  /* Icon system */
+  --jstree-icon-size: 20px;
+  --jstree-icon-margin: 4px;
+  --jstree-icon-color: #666;
+  --jstree-icon-hover: #333;
+  
+  /* Modern colors */
+  --jstree-bg-hover: rgba(33, 150, 243, 0.08);
+  --jstree-bg-selected: rgba(33, 150, 243, 0.15);
+  --jstree-text-color: #1976D2;
+  --jstree-border-color: #e0e0e0;
+  
+  /* Modern icons using inline SVG data URIs - DISTINCTIVE MODERN STYLE */
+  --jstree-arrow-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%234CAF50' stroke='%23387DD3' stroke-width='2'/%3E%3Cpath fill='white' d='M9 16.5L13 12L9 7.5L10.5 6L16 12L10.5 18L9 16.5Z'/%3E%3C/svg%3E");
+  --jstree-arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%234CAF50' stroke='%23387DD3' stroke-width='2'/%3E%3Cpath fill='white' d='M7.5 9L12 13.5L16.5 9L18 10.5L12 16.5L6 10.5L7.5 9Z'/%3E%3C/svg%3E");
+  --jstree-folder: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FF6B35' stroke='%23E74C3C' stroke-width='1' d='M4 6h6l2 2h8c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2z'/%3E%3Cpath fill='%23FF8A65' d='M10 8H4v8h16v-6h-8l-2-2z'/%3E%3C/svg%3E");
+  --jstree-folder-open: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FF6B35' stroke='%23E74C3C' stroke-width='1' d='M4 6h6l2 2h8c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2z'/%3E%3Cpath fill='%23FFAB91' d='M22 14H4v2h18v-2z'/%3E%3C/svg%3E");
+  --jstree-file: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232196F3' stroke='%231976D2' stroke-width='1' d='M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z'/%3E%3Cpath fill='%23E3F2FD' d='M13 9V3.5L18.5 9H13z'/%3E%3Cpath fill='%2390CAF9' d='M8 13h8v1H8v-1zm0 2h8v1H8v-1zm0-4h8v1H8v-1z'/%3E%3C/svg%3E");
+  --jstree-checkbox: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='3' fill='none' stroke='%23666' stroke-width='2'/%3E%3C/svg%3E");
+  --jstree-checkbox-checked: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='3' fill='%234CAF50'/%3E%3Cpath fill='white' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
+  --jstree-loading: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%23666' stroke-width='2'/%3E%3Cpath fill='%23666' d='M12 4v4l3 3'/%3E%3CanimateTransform attributeName='transform' attributeType='XML' dur='1s' from='0 12 12' repeatCount='indefinite' to='360 12 12' type='rotate'/%3E%3C/svg%3E");
+}
+
+/* Base tree structure - matches jstree HTML structure */
+.jstree-container-ul,
+.jstree-children {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jstree-node {
+  display: grid;
+  grid-template-columns: var(--jstree-icon-size) var(--jstree-icon-size) 1fr;
+  grid-template-areas: "arrow icon text";
+  align-items: center;
+  gap: var(--jstree-icon-margin);
+  min-height: var(--jstree-icon-size);
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.jstree-node:hover {
+  background-color: var(--jstree-bg-hover);
+  transform: translateX(2px);
+}
+
+/* Arrow icon (tree expansion) - uses grid area */
+.jstree-ocl {
+  grid-area: arrow;
+  width: var(--jstree-icon-size);
+  height: var(--jstree-icon-size);
+  background-image: var(--jstree-arrow-right);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+.jstree-ocl:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.jstree-open > .jstree-ocl {
+  background-image: var(--jstree-arrow-down);
+  transform: rotate(0deg);
+}
+
+.jstree-leaf > .jstree-ocl {
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Theme icon (folder/file) - uses grid area */
+.jstree-themeicon {
+  grid-area: icon;
+  width: var(--jstree-icon-size);
+  height: var(--jstree-icon-size);
+  background-image: var(--jstree-folder);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.jstree-open > .jstree-themeicon {
+  background-image: var(--jstree-folder-open);
+}
+
+.jstree-leaf > .jstree-themeicon,
+.jstree-themeicon.jstree-file {
+  background-image: var(--jstree-file);
+}
+
+/* Anchor text - uses grid area */
+.jstree-anchor {
+  grid-area: text;
+  display: flex;
+  align-items: center;
+  color: var(--jstree-text-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: var(--jstree-icon-size);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.jstree-anchor:hover,
+.jstree-hovered .jstree-anchor {
+  background-color: var(--jstree-bg-hover);
+}
+
+.jstree-clicked .jstree-anchor,
+.jstree-selected .jstree-anchor {
+  background-color: var(--jstree-bg-selected);
+  font-weight: 600;
+}
+
+.jstree-anchor:focus {
+  outline: 2px solid #2196F3;
+  outline-offset: 1px;
+}
+
+/* Children container - modern flexbox */
+.jstree-node > .jstree-children {
+  grid-column: span 3;
+  margin-left: calc(var(--jstree-icon-size) + var(--jstree-icon-margin) * 2);
+  margin-top: 2px;
+  display: none;
+}
+
+.jstree-node.jstree-open > .jstree-children {
+  display: flex;
+}
+
+/* Checkbox styling */
+.jstree-checkbox {
+  width: var(--jstree-icon-size);
+  height: var(--jstree-icon-size);
+  background-image: var(--jstree-checkbox);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.jstree-checkbox:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.jstree-checked .jstree-checkbox {
+  background-image: var(--jstree-checkbox-checked);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* Loading state */
+.jstree-loading .jstree-themeicon {
+  background-image: var(--jstree-loading);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* No icons support */
+.jstree-no-icons .jstree-themeicon,
+.jstree-anchor > .jstree-themeicon-hidden {
+  display: none;
+}
+
+.jstree-no-icons .jstree-node {
+  grid-template-columns: var(--jstree-icon-size) 1fr;
+  grid-template-areas: "arrow text";
+}
+
+/* RTL Support */
+.jstree-rtl .jstree-node {
+  direction: rtl;
+}
+
+.jstree-rtl .jstree-children {
+  margin-left: 0;
+  margin-right: calc(var(--jstree-icon-size) + var(--jstree-icon-margin) * 2);
+}
+
+.jstree-rtl .jstree-ocl {
+  transform: scaleX(-1);
+}
+
+.jstree-rtl.jstree-open > .jstree-ocl {
+  transform: scaleX(-1);
+}
+
+/* Size variants */
+.jstree-small {
+  --jstree-icon-size: 16px;
+  --jstree-icon-margin: 2px;
+}
+
+.jstree-small .jstree-anchor {
+  font-size: 12px;
+}
+
+.jstree-large {
+  --jstree-icon-size: 24px;
+  --jstree-icon-margin: 6px;
+}
+
+.jstree-large .jstree-anchor {
+  font-size: 16px;
+}
+
+/* Modern wholerow */
+.jstree-wholerow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: transparent;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.jstree-wholerow-hovered {
+  background-color: var(--jstree-bg-hover);
+}
+
+.jstree-wholerow-clicked {
+  background-color: var(--jstree-bg-selected);
+}
+
+/* Context menu modern styling */
+.vakata-context {
+  background: white;
+  border: 1px solid var(--jstree-border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  padding: 6px 0;
+  min-width: 180px;
+  z-index: 1000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.vakata-context li {
+  list-style: none;
+}
+
+.vakata-context li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.vakata-context li a:hover {
+  background-color: var(--jstree-bg-hover);
+  transform: translateX(4px);
+}
+
+.vakata-context li a i {
+  width: 16px;
+  height: 16px;
+  background-size: contain;
+}
+
+/* Drag and drop styling */
+#jstree-marker {
+  border-left: 3px solid #2196F3;
+  width: 0;
+  height: 24px;
+  position: absolute;
+  background: transparent;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.4);
+}
+
+#jstree-dnd {
+  background: white;
+  border: 2px solid #2196F3;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 20px rgba(33, 150, 243, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#jstree-dnd .jstree-ok,
+#jstree-dnd .jstree-er {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-size: contain;
+}
+
+#jstree-dnd .jstree-ok {
+  background: var(--jstree-checkbox-checked);
+}
+
+#jstree-dnd .jstree-er {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23F44336'/%3E%3Cpath fill='white' d='M15.5 8.5L12 12l3.5 3.5L14 17l-3.5-3.5L7 17l-1.5-1.5L9 12 5.5 8.5 7 7l3.5 3.5L14 7l1.5 1.5z'/%3E%3C/svg%3E");
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --jstree-text-color: #64B5F6;
+    --jstree-bg-hover: rgba(100, 181, 246, 0.1);
+    --jstree-bg-selected: rgba(100, 181, 246, 0.2);
+    --jstree-border-color: #424242;
+  }
+  
+  .vakata-context {
+    background: #1e1e1e;
+    border-color: #424242;
+    color: #e0e0e0;
+  }
+  
+  .vakata-context li a {
+    color: #e0e0e0;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.jstree-anchor:focus-visible {
+  outline: 2px solid #2196F3;
+  outline-offset: 2px;
+  background-color: var(--jstree-bg-selected);
+}

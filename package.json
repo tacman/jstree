@@ -1,12 +1,25 @@
 {
   "name": "@tacman1123/jstree-esm",
   "title": "jsTree",
-  "description": "jQuery tree plugin",
-  "version": "3.4.0",
+  "description": "jsTree v4 fork with Stimulus-first API and native DOM events",
+  "version": "4.0.0",
   "homepage": "https://github.com/tacman/jstree",
   "main": "./dist/jstree.js",
   "module": "./jstree.esm.mjs",
   "buildName": "jstree",
+  "files": [
+    "LICENSE-MIT",
+    "README.md",
+    "dist/**/*",
+    "src/**/*",
+    "jstree.browser-module.js",
+    "jstree.browser-module.mjs",
+    "jstree.esm.browser.js",
+    "jstree.esm.browser.mjs",
+    "jstree.esm.mjs",
+    "jstree.module.mjs",
+    "jstree.stimulus.mjs"
+  ],
   "exports": {
     ".": {
       "import": "./jstree.esm.mjs",
@@ -15,9 +28,18 @@
     },
     "./module": "./jstree.module.mjs",
     "./esm": "./jstree.esm.mjs",
-    "./browser-module": "./jstree.browser-module.js",
-    "./esm-browser": "./jstree.esm.browser.js",
+    "./browser-module": {
+      "import": "./jstree.browser-module.mjs",
+      "default": "./jstree.browser-module.js"
+    },
+    "./esm-browser": {
+      "import": "./jstree.esm.browser.mjs",
+      "default": "./jstree.esm.browser.js"
+    },
+    "./stimulus": "./jstree.stimulus.mjs",
     "./jquery-plugin": "./dist/jstree.js",
+    "./src/*": "./src/*",
+    "./dist/themes/*": "./dist/themes/*",
     "./dist/*": "./dist/*",
     "./package.json": "./package.json"
   },
@@ -58,6 +80,13 @@
   },
   "dependencies": {
     "jquery": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@hotwired/stimulus": "^3.2.0"
+  },
+  "scripts": {
+    "pack:check": "npm pack --dry-run",
+    "release:check": "npm run pack:check"
   },
   "npmName": "jstree",
   "npmFileMap": [

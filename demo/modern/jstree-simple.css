@@ -1,0 +1,72 @@
+/* Modern jstree - simple CSS that works */
+:root {
+  --jstree-arrow-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%234CAF50'/%3E%3Cpath fill='white' d='M9 16.5L13 12L9 7.5L10.5 6L16 12L10.5 18L9 16.5Z'/%3E%3C/svg%3E");
+  --jstree-folder: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FF6B35' d='M4 6h6l2 2h8c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2z'/%3E%3C/svg%3E");
+  --jstree-file: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232196F3' d='M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z'/%3E%3C/svg%3E");
+}
+
+/* Icon sizes */
+.jstree-icon {
+  width: 20px !important;
+  height: 20px !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  display: inline-block !important;
+}
+
+/* Arrow icons (expand/collapse) */
+.jstree-ocl {
+  background-image: var(--jstree-arrow-right) !important;
+  cursor: pointer !important;
+}
+
+.jstree-open > .jstree-ocl {
+  transform: rotate(90deg) !important;
+}
+
+.jstree-leaf > .jstree-ocl {
+  opacity: 0 !important;
+  cursor: default !important;
+}
+
+/* Theme icons (folders/files) */
+.jstree-themeicon {
+  background-image: var(--jstree-folder) !important;
+}
+
+.jstree-open > .jstree-themeicon {
+  background-image: var(--jstree-folder) !important;
+}
+
+.jstree-leaf > .jstree-themeicon,
+.jstree-themeicon.jstree-file {
+  background-image: var(--jstree-file) !important;
+}
+
+/* Hide default background */
+.jstree-default .jstree-icon {
+  background-image: none !important;
+}
+
+.jstree-default .jstree-ocl {
+  background-image: var(--jstree-arrow-right) !important;
+}
+
+.jstree-default .jstree-themeicon {
+  background-image: var(--jstree-folder) !important;
+}
+
+.jstree-default.jstree-open > .jstree-themeicon {
+  background-image: var(--jstree-folder) !important;
+}
+
+.jstree-default.jstree-leaf > .jstree-themeicon,
+.jstree-default .jstree-themeicon.jstree-file {
+  background-image: var(--jstree-file) !important;
+}
+
+.demo {
+  border: 2px solid green;
+  padding: 10px;
+}

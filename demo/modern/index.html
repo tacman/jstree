@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Modern jstree with Plugins & Native Events</title>
+	<style>
+		html { margin:0; padding:0; font-size:62.5%; }
+		body { 
+			max-width:900px; 
+			min-width:300px; 
+			margin:0 auto; 
+			padding:20px 10px; 
+			font-size:14px; 
+			font-size:1.4em; 
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			min-height: 100vh;
+		}
+		h1 { font-size:1.8em; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+		h2 { font-size:1.4em; color: white; margin-top: 2em; }
+		.demo { 
+			margin-bottom: 20px;
+			box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+		}
+		.controls {
+			background: white;
+			padding: 15px;
+			border-radius: 12px;
+			margin-bottom: 15px;
+			box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+		}
+		.controls input {
+			padding: 8px 12px;
+			border: 2px solid #e2e8f0;
+			border-radius: 8px;
+			font-size: 14px;
+			margin-right: 8px;
+			transition: all 0.2s ease;
+		}
+		.controls input:focus {
+			outline: none;
+			border-color: #6366f1;
+			box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+		}
+		.controls button {
+			padding: 8px 16px;
+			background: #6366f1;
+			color: white;
+			border: none;
+			border-radius: 8px;
+			font-size: 14px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+		}
+		.controls button:hover {
+			background: #4f46e5;
+			transform: translateY(-1px);
+		}
+		.event-log {
+			background: white;
+			padding: 15px;
+			border-radius: 12px;
+			margin-top: 15px;
+			box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+			max-height: 200px;
+			overflow-y: auto;
+		}
+		.event-log h3 {
+			margin-top: 0;
+			color: #1e293b;
+		}
+		.event-item {
+			padding: 4px 8px;
+			margin: 2px 0;
+			border-radius: 4px;
+			font-family: 'Courier New', monospace;
+			font-size: 12px;
+			background: #f8fafc;
+			border-left: 3px solid #6366f1;
+		}
+		.event-time {
+			color: #64748b;
+			font-weight: bold;
+		}
+		.example-grid {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 280px;
+			gap: 14px;
+			align-items: start;
+		}
+		.event-log.side {
+			margin-top: 0;
+			max-height: 260px;
+		}
+		.event-log.side .event-item {
+			font-size: 11px;
+		}
+		@media (max-width: 860px) {
+			.example-grid {
+				grid-template-columns: 1fr;
+			}
+			.event-log.side {
+				max-height: 180px;
+			}
+		}
+	</style>
+	<!-- Beautiful Modern CSS -->
+	<link rel="stylesheet" href="./jstree-modern.css">
+</head>
+<body data-controller="jstree" data-action="click->jstree#logClick">
+	<h1>🌟 Modern jstree - Beautiful & Plugin-Friendly</h1>
+	
+	<div class="controls">
+		<input type="text" id="search-input" placeholder="🔍 Search nodes..." data-jstree-target="searchInput" data-action="keydown->jstree#search">
+		<button id="search-btn" type="button" data-action="click->jstree#search">Search</button>
+		<button id="clear-btn" type="button" data-action="click->jstree#clearSearch">Clear</button>
+		<button id="expand-btn" type="button" data-action="click->jstree#expandAll">Expand All</button>
+		<button id="collapse-btn" type="button" data-action="click->jstree#collapseAll">Collapse All</button>
+	</div>
+
+	<div class="controls">
+		<h3>Selection Controls</h3>
+		<button id="select-all-btn" type="button" data-action="click->jstree#selectAll">Select All</button>
+		<button id="deselect-all-btn" type="button" data-action="click->jstree#deselectAll">Deselect All</button>
+		<button id="get-selected-btn" type="button" data-action="click->jstree#getSelected">Get Selected</button>
+	</div>
+
+	<h2>✅ Checkbox Tree</h2>
+	<div class="example-grid">
+		<div id="checkbox-tree" class="demo jstree" data-jstree-target="checkboxTree">
+			<ul>
+				<li data-jstree='{ "opened" : true }'>
+					Projects
+					<ul>
+						<li data-jstree='{ "opened" : true }'>
+							Web Development
+							<ul>
+								<li data-jstree='{ "selected" : true }'>index.html</li>
+								<li data-jstree='{ "selected" : true }'>style.css</li>
+								<li>script.js</li>
+							</ul>
+						</li>
+						<li data-jstree='{ "opened" : true }'>
+							Mobile Development
+							<ul>
+								<li>MainActivity.java</li>
+								<li>build.gradle</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="event-log side">
+			<h3>Events</h3>
+			<div data-jstree-target="checkboxLog"></div>
+		</div>
+	</div>
+
+	<h2>🔍 Searchable Tree</h2>
+	<div class="example-grid">
+		<div id="search-tree" class="demo jstree" data-jstree-target="searchTree">
+			<ul>
+				<li data-jstree='{ "opened" : true }'>
+					Documentation
+					<ul>
+						<li>README.md</li>
+						<li>API.md</li>
+						<li data-jstree='{ "opened" : true }'>
+							Guides
+							<ul>
+								<li>Getting Started.md</li>
+								<li>Advanced Usage.md</li>
+								<li>Troubleshooting.md</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li data-jstree='{ "opened" : true }'>
+					Configuration
+					<ul>
+						<li>config.json</li>
+						<li>.env</li>
+						<li data-jstree='{ "opened" : true }'>
+							Database
+							<ul>
+								<li>schema.sql</li>
+								<li>seeds.sql</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="event-log side">
+			<h3>Events</h3>
+			<div data-jstree-target="searchLog"></div>
+		</div>
+	</div>
+
+	<h2>🌐 AJAX Tree</h2>
+	<div class="controls">
+		<button type="button" data-action="click->jstree#refreshAjax">Reload AJAX</button>
+	</div>
+	<div class="example-grid">
+		<div id="ajax-tree" class="demo jstree" data-jstree-target="ajaxTree"></div>
+		<div class="event-log side">
+			<h3>Events</h3>
+			<div data-jstree-target="ajaxLog"></div>
+		</div>
+	</div>
+
+	<h2>🎨 Themed Tree</h2>
+	<div class="controls">
+		<button id="theme-small-btn" type="button" data-action="click->jstree#setThemeSmall">Small</button>
+		<button id="theme-large-btn" type="button" data-action="click->jstree#setThemeLarge">Large</button>
+		<button id="theme-normal-btn" type="button" data-action="click->jstree#setThemeNormal">Normal</button>
+	</div>
+	<div class="example-grid">
+		<div id="themed-tree" class="demo jstree" data-jstree-target="themedTree">
+			<ul>
+				<li data-jstree='{ "opened" : true }'>Components
+					<ul>
+						<li>Button.jsx</li>
+						<li>Input.jsx</li>
+						<li>Modal.jsx</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="event-log side">
+			<h3>Events</h3>
+			<div data-jstree-target="themedLog"></div>
+		</div>
+	</div>
+
+	<h2>🧲 Drag and Drop Tree</h2>
+	<div class="controls">
+		<button type="button" data-action="click->jstree#addNode">Add Node</button>
+		<button type="button" data-action="click->jstree#deleteNode">Delete Selected</button>
+	</div>
+	<div class="example-grid">
+		<div id="dnd-tree" class="demo jstree" data-jstree-target="dndTree">
+			<ul>
+				<li data-jstree='{ "opened" : true }'>Backlog
+					<ul>
+						<li>Setup project</li>
+						<li>Build API</li>
+						<li>Add tests</li>
+					</ul>
+				</li>
+				<li data-jstree='{ "opened" : true }'>In Progress
+					<ul>
+						<li>Modernize UI</li>
+					</ul>
+				</li>
+				<li data-jstree='{ "opened" : true }'>Done</li>
+			</ul>
+		</div>
+		<div class="event-log side">
+			<h3>Events</h3>
+			<div data-jstree-target="dndLog"></div>
+		</div>
+	</div>
+
+	<!-- Include plugins -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="./../../src/jstree.js"></script>
+	<script src="./../../src/jstree.checkbox.js"></script>
+	<script src="./../../src/jstree.search.js"></script>
+	<script src="./../../src/jstree.dnd.js"></script>
+	<script src="./../../src/jstree.contextmenu.js"></script>
+	
+	<script type="importmap">
+		{
+			"imports": {
+				"@hotwired/stimulus": "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.2/+esm"
+			}
+		}
+	</script>
+	<script type="module" src="./stimulus-app.js"></script>
+</body>
+</html>

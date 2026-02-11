@@ -1,47 +1,29 @@
-# jstree
+# jsTree v4 (Fork)
 
-[jsTree](http://www.jstree.com/) is jquery plugin, that provides interactive trees. It is absolutely free, [open source](https://github.com/vakata/jstree) and distributed under the MIT license.
+This repository is a v4 fork of [vakata/jstree](https://github.com/vakata/jstree) focused on:
 
-jsTree is easily extendable, themable and configurable, it supports HTML & JSON data sources, AJAX & async callback loading.
+- modern no-build demos,
+- Stimulus-first usage,
+- native DOM events for non-jQuery consumers,
+- keeping jQuery as an internal runtime dependency.
 
-jsTree functions properly in either box-model (content-box or border-box), can be loaded as an AMD module, and has a built in mobile theme for responsive design, that can easily be customized. It triggers jQuery events and can also dispatch native DOM CustomEvents (`jstree:<event>`), so both jQuery and non-jQuery consumers can bind callbacks.
+The classic jQuery plugin API is still available as a compatibility path.
 
-You also get:
- * drag & drop support
- * keyboard navigation
- * inline edit, create and delete
- * tri-state checkboxes
- * fuzzy searching
- * customizable node types
-
-_For more information, examples and API docs head on over to [the wiki page](https://github.com/vakata/jstree/wiki) and [jstree.com](http://www.jstree.com)_.
-_Feel free to ask any questions on the [discussions board](https://github.com/vakata/jstree/discussions)._
-_The PHP demos are now in a [separate repository](https://github.com/vakata/jstree-php-demos)._
-
-## Local testing from this repository
-
-Start a local web server from the repository root:
+## Install
 
 ```bash
-php -S 127.0.0.1:8000 -t .
+npm install @tacman1123/jstree-esm
 ```
 
-Make sure dependencies are installed first (`npm install`), since local demo pages load jQuery from `node_modules/jquery/dist/jquery.js`.
+## Package entry points
 
-Then open:
+- `@tacman1123/jstree-esm` - ESM function API
+- `@tacman1123/jstree-esm/module` - direct module API
+- `@tacman1123/jstree-esm/browser-module` - browser-global API helpers
+- `@tacman1123/jstree-esm/stimulus` - Stimulus controller scaffold
+- `@tacman1123/jstree-esm/jquery-plugin` - legacy plugin compatibility path
 
-- `http://127.0.0.1:8000/` (launcher page)
-- `http://127.0.0.1:8000/demo/basic/index.html`
-- `http://127.0.0.1:8000/demo/module/index.html` (function-based API demo)
-- `http://127.0.0.1:8000/test/visual/desktop/index.html`
-- `http://127.0.0.1:8000/test/visual/mobile/index.html`
-- `http://127.0.0.1:8000/test/unit/index.html`
-
-## ESM API (function-based)
-
-jsTree is still fully available as the classic jQuery plugin (`$(selector).jstree(...)`).
-
-A function-based ESM API is available for module-based projects:
+## ESM function API
 
 ```js
 import { createTree, getTree, callTree, destroyTree } from '@tacman1123/jstree-esm';
@@ -50,70 +32,61 @@ const el = document.getElementById('my-tree');
 
 createTree(el, {
   core: {
-    data: [{ text: 'Root node', children: [{ text: 'Child node' }] }]
+    data: [{ text: 'Root', children: [{ text: 'Child' }] }]
   }
 });
 
-const tree = getTree(el);
 callTree(el, 'open_all');
+const instance = getTree(el);
 destroyTree(el);
 ```
 
-This works well in Stimulus controllers where `el` is typically `this.element` or a target.
+## Stimulus controller usage
 
-This module API keeps jQuery internal while allowing non-`$().jstree(...)` invocation.
+```js
+import { Application } from '@hotwired/stimulus';
+import JsTreeController from '@tacman1123/jstree-esm/stimulus';
 
-For browser-only pages without bundlers, load `jquery` and `dist/jstree.js` first, then import from `jstree.browser-module.js`.
+const app = Application.start();
+app.register('jstree', JsTreeController);
+```
 
-### Native DOM events
+The bundled controller is a scaffold and intended for extension in app code.
 
-In addition to jQuery events like `changed.jstree`, jsTree now dispatches native browser events by default:
+## Events
 
-- `jstree:ready`
-- `jstree:changed`
-- `jstree:open_node`
+jsTree triggers jQuery events and also dispatches native `CustomEvent`s.
 
-Listen with standard APIs:
+For an event like `changed`:
+
+- jQuery event: `changed.jstree`
+- native event (preferred): `changed.jstree`
+- native compatibility alias: `jstree:changed`
 
 ```js
 const el = document.getElementById('tree');
-el.addEventListener('jstree:changed', (event) => {
+el.addEventListener('changed.jstree', (event) => {
   console.log(event.detail);
 });
 ```
 
-Disable this if needed using `core.dispatch_events: false`.
+Disable native dispatch with `core.dispatch_events: false`.
 
-## Fork Publishing and Attribution
+## Local development
 
-Yes, you can publish from your fork. Use a new package name (the unscoped `jstree` name is already owned upstream).
-
-Planned package name for this fork:
-
-- `@tacman1123/jstree-esm`
-
-Publish steps:
+Start a local server from repository root:
 
 ```bash
-npm login
-npm publish --access public
+php -S 127.0.0.1:8000 -t .
 ```
 
-Attribution checklist:
+Then open:
 
-- Keep `LICENSE-MIT` unchanged.
-- Keep upstream copyright notices in source headers.
-- State clearly in your README that this is a fork of `vakata/jstree`.
-- Link to the upstream repository and mention major changes in your fork.
+- `http://127.0.0.1:8000/` launcher
+- `http://127.0.0.1:8000/demo/modern/index.html` modern Stimulus demo
+- `http://127.0.0.1:8000/demo/module/index.html` function API demo
+- `http://127.0.0.1:8000/demo/basic/index.html` legacy jQuery API coverage demo
 
-## License & Contributing
+## License
 
-_Please do NOT edit files in the "dist" subdirectory as they are generated via grunt. You'll find source code in the "src" subdirectory!_
-
-If you want to you can always [sponsor me](https://github.com/sponsors/vakata) or [donate a small amount][paypal] to help the development of jstree.
-
-[paypal]: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@vakata.com&currency_code=USD&amount=&return=http://jstree.com/donation&item_name=Buy+me+a+coffee+for+jsTree
-
-Copyright (c) 2020 Ivan Bozhanov (http://vakata.com)
-
-Licensed under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
+MIT. Keep `LICENSE-MIT` and upstream copyright notices.

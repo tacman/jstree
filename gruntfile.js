@@ -117,7 +117,7 @@ module.exports = function(grunt) {
         }
       },
       css : {
-        files: ['src/**/*.less','src/**/*.png','src/**/*.gif'],
+        files: ['src/**/*.less','src/**/*.png','src/**/*.gif','src/**/*.svg'],
         tasks: ['css'],
         options : {
           atBegin : true

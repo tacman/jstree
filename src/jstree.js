@@ -696,7 +696,7 @@
 		 */
 		force_text : false,
 		/**
-		 * Dispatch native DOM CustomEvents (`jstree:<event>`) on the tree container. Defaults to `true`
+		 * Dispatch native DOM CustomEvents (`<event>.jstree` and `jstree:<event>`) on the tree container. Defaults to `true`
 		 * @name $.jstree.defaults.core.dispatch_events
 		 */
 		dispatch_events : true,
@@ -1222,7 +1222,7 @@
 		 * @param  {Object} data additional data to pass with the event
 		 */
 		trigger : function (ev, data) {
-			var name, target;
+			var name, target, eventName, legacyEventName;
 			if(!data) {
 				data = {};
 			}
@@ -1232,11 +1232,20 @@
 			if(this.settings.core && this.settings.core.dispatch_events !== false && typeof window.CustomEvent === 'function') {
 				target = this.element && this.element.length ? this.element[0] : null;
 				if(target) {
-					var customEvent = new window.CustomEvent('jstree:' + name, {
+					eventName = name + '.jstree';
+					legacyEventName = 'jstree:' + name;
+					target.dispatchEvent(new window.CustomEvent(eventName, {
 						detail : data,
-						bubbles : true
-					});
-					target.dispatchEvent(customEvent);
+						bubbles : true,
+						cancelable : true
+					}));
+					if(legacyEventName !== eventName) {
+						target.dispatchEvent(new window.CustomEvent(legacyEventName, {
+							detail : data,
+							bubbles : true,
+							cancelable : true
+						}));
+					}
 				}
 			}
 		},
