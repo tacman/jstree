@@ -88,7 +88,7 @@
 						if($.vakata.is_function(s.data)) {
 							s.data = s.data.call(this, toLoad);
 						}
-						return $.ajax(s)
+					return $.jstree.ajax(s)
 							.done(function (data,t,x) {
 									var i, j;
 									if(data) {

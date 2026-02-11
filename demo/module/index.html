@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jsTree function API demo</title>
+  <link rel="stylesheet" href="./../../dist/themes/default/style.min.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: #f2f6f9;
+      color: #1f2937;
+    }
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #d3dae3;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    p {
+      margin-top: 0;
+      color: #475569;
+    }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    button {
+      border: 1px solid #0f766e;
+      background: #0f766e;
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: #ffffff;
+      color: #0f766e;
+    }
+    #tree {
+      border: 1px solid #d3dae3;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 140px;
+      background: #fcfdff;
+    }
+    #log {
+      margin-top: 16px;
+      background: #111827;
+      color: #d1fae5;
+      border-radius: 8px;
+      padding: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      min-height: 48px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Function API demo</h1>
+    <p>This page uses jsTree without calling <code>$().jstree(...)</code> and listens with <code>addEventListener</code>.</p>
+
+    <div class="toolbar">
+      <button id="btn-open">Open all</button>
+      <button id="btn-close" class="secondary">Close all</button>
+      <button id="btn-select" class="secondary">Select first child</button>
+      <button id="btn-destroy" class="secondary">Destroy</button>
+      <button id="btn-create">Recreate</button>
+    </div>
+
+    <div id="tree"></div>
+    <div id="log"></div>
+  </main>
+
+  <script src="./../../node_modules/jquery/dist/jquery.js"></script>
+  <script src="./../../dist/jstree.js"></script>
+  <script type="module">
+    import { createTree, callTree, getTree, destroyTree, version } from '/jstree.browser-module.js';
+
+    const log = document.getElementById('log');
+
+    function write(message) {
+      log.textContent = message;
+    }
+
+    function makeTree() {
+      createTree('#tree', {
+        core: {
+          data: [
+            {
+              text: 'Project',
+              state: { opened: true },
+              children: [
+                { id: 'child-1', text: 'README.md' },
+                { id: 'child-2', text: 'src', children: [{ text: 'jstree.js' }, { text: 'jstree.search.js' }] }
+              ]
+            }
+          ]
+        },
+        plugins: ['wholerow']
+      });
+      write('Created tree with function API. jsTree version: ' + version);
+    }
+
+    const treeElement = document.getElementById('tree');
+    treeElement.addEventListener('jstree:ready', () => {
+      write('Native event received: jstree:ready');
+    });
+
+    treeElement.addEventListener('jstree:changed', (event) => {
+      const selected = event.detail && event.detail.selected ? event.detail.selected.join(', ') : '(none)';
+      write('Native event received: jstree:changed -> ' + selected);
+    });
+
+    makeTree();
+
+    document.getElementById('btn-open').addEventListener('click', () => {
+      callTree('#tree', 'open_all');
+      write('Opened all nodes via callTree().');
+    });
+
+    document.getElementById('btn-close').addEventListener('click', () => {
+      callTree('#tree', 'close_all');
+      write('Closed all nodes via callTree().');
+    });
+
+    document.getElementById('btn-select').addEventListener('click', () => {
+      callTree('#tree', 'deselect_all');
+      callTree('#tree', 'select_node', 'child-1');
+      const tree = getTree('#tree');
+      write('Selected node IDs: ' + tree.get_selected().join(', '));
+    });
+
+    document.getElementById('btn-destroy').addEventListener('click', () => {
+      const removed = destroyTree('#tree');
+      write(removed ? 'Destroyed tree.' : 'No tree instance found.');
+    });
+
+    document.getElementById('btn-create').addEventListener('click', () => {
+      if (!getTree('#tree')) {
+        makeTree();
+      } else {
+        write('Tree already exists.');
+      }
+    });
+  </script>
+</body>
+</html>

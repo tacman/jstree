@@ -13,7 +13,7 @@
 }(function ($, undefined) {
 	"use strict";
 /*!
- * jsTree 3.3.17
+ * jsTree {{VERSION}}
  * http://jstree.com/
  *
  * Copyright (c) 2014 Ivan Bozhanov (http://vakata.com)
@@ -63,7 +63,7 @@
 		 * specifies the jstree version in use
 		 * @name $.jstree.version
 		 */
-		version : '3.3.17',
+		version : '{{VERSION}}',
 		/**
 		 * holds all the default options used when creating new instances
 		 * @name $.jstree.defaults
@@ -83,6 +83,255 @@
 		path : src && src.indexOf('/') !== -1 ? src.replace(/\/[^\/]+$/,'') : '',
 		idregex : /[\\:&!^|()\[\]<>@*'+~#";.,=\- \/${}%?`]/g,
 		root : '#'
+	};
+
+	$.jstree.ajax = function (options) {
+		var settings = $.extend(true, {}, options || {}),
+			method = (settings.type || settings.method || 'GET').toUpperCase(),
+			url = settings.url || window.location.href,
+			headers = $.extend({}, settings.headers || {}),
+			hasBody = method !== 'GET' && method !== 'HEAD',
+			data = settings.data,
+			controller = null,
+			timeoutId = null,
+			abortedState = null,
+			xhrFallback = null,
+			state = 'pending',
+			context = settings.context || window,
+			resolvedArgs = null,
+			rejectedArgs = null,
+			doneCallbacks = [],
+			failCallbacks = [],
+			alwaysCallbacks = [];
+
+		var rejectWith = function () {
+			var i;
+			if(state !== 'pending') {
+				return;
+			}
+			state = 'rejected';
+			rejectedArgs = Array.prototype.slice.call(arguments);
+			if($.vakata.is_function(settings.error)) {
+				settings.error.apply(context, rejectedArgs);
+			}
+			if($.vakata.is_function(settings.complete)) {
+				settings.complete.call(context, rejectedArgs[0], rejectedArgs[1] || 'error');
+			}
+			for(i = 0; i < failCallbacks.length; i++) {
+				failCallbacks[i].apply(context, rejectedArgs);
+			}
+			for(i = 0; i < alwaysCallbacks.length; i++) {
+				alwaysCallbacks[i].apply(context, rejectedArgs);
+			}
+		};
+
+		var resolveWith = function () {
+			var i;
+			if(state !== 'pending') {
+				return;
+			}
+			state = 'resolved';
+			resolvedArgs = Array.prototype.slice.call(arguments);
+			if($.vakata.is_function(settings.success)) {
+				settings.success.apply(context, resolvedArgs);
+			}
+			if($.vakata.is_function(settings.complete)) {
+				settings.complete.call(context, resolvedArgs[2], resolvedArgs[1] || 'success');
+			}
+			for(i = 0; i < doneCallbacks.length; i++) {
+				doneCallbacks[i].apply(context, resolvedArgs);
+			}
+			for(i = 0; i < alwaysCallbacks.length; i++) {
+				alwaysCallbacks[i].apply(context, resolvedArgs);
+			}
+		};
+
+		var api = {
+			done : function (callback) {
+				if(!$.vakata.is_function(callback)) {
+					return api;
+				}
+				if(state === 'resolved') {
+					callback.apply(context, resolvedArgs);
+				}
+				else if(state === 'pending') {
+					doneCallbacks.push(callback);
+				}
+				return api;
+			},
+			fail : function (callback) {
+				if(!$.vakata.is_function(callback)) {
+					return api;
+				}
+				if(state === 'rejected') {
+					callback.apply(context, rejectedArgs);
+				}
+				else if(state === 'pending') {
+					failCallbacks.push(callback);
+				}
+				return api;
+			},
+			always : function (callback) {
+				if(!$.vakata.is_function(callback)) {
+					return api;
+				}
+				if(state === 'resolved') {
+					callback.apply(context, resolvedArgs);
+				}
+				else if(state === 'rejected') {
+					callback.apply(context, rejectedArgs);
+				}
+				else {
+					alwaysCallbacks.push(callback);
+				}
+				return api;
+			},
+			abort : function (statusText) {
+				if(state !== 'pending') {
+					return api;
+				}
+				abortedState = statusText || 'abort';
+				if(xhrFallback && $.vakata.is_function(xhrFallback.abort)) {
+					xhrFallback.abort();
+					return api;
+				}
+				if(controller) {
+					controller.abort();
+				}
+				rejectWith({
+					status : 0,
+					statusText : abortedState,
+					getResponseHeader : function () { return null; }
+				}, abortedState, abortedState);
+				return api;
+			}
+		};
+
+		if(
+			!window.fetch ||
+			settings.dataType === 'jsonp' ||
+			settings.jsonp ||
+			settings.fetch === false
+		) {
+			xhrFallback = $.ajax(settings)
+				.done(function (d, t, x) {
+					resolveWith(d, t, x);
+				})
+				.fail(function (x, t, e) {
+					rejectWith(x, t, e);
+				});
+			return api;
+		}
+
+		if(hasBody) {
+			if(data !== undefined && data !== null) {
+				if(
+					typeof data === 'string' ||
+					(typeof FormData !== 'undefined' && data instanceof FormData) ||
+					(typeof Blob !== 'undefined' && data instanceof Blob) ||
+					(typeof ArrayBuffer !== 'undefined' && data instanceof ArrayBuffer) ||
+					(typeof URLSearchParams !== 'undefined' && data instanceof URLSearchParams)
+				) {
+					settings._body = data;
+				}
+				else if(settings.processData === false) {
+					settings._body = data;
+				}
+				else if(typeof data === 'object') {
+					if(settings.contentType && settings.contentType.indexOf('application/json') !== -1) {
+						settings._body = JSON.stringify(data);
+					}
+					else {
+						settings._body = $.param(data, settings.traditional);
+						if(!headers['Content-Type'] && settings.contentType !== false) {
+							headers['Content-Type'] = settings.contentType || 'application/x-www-form-urlencoded; charset=UTF-8';
+						}
+					}
+				}
+				else {
+					settings._body = data;
+				}
+			}
+		}
+		else if(data !== undefined && data !== null) {
+			if(typeof data === 'string') {
+				url += (url.indexOf('?') === -1 ? '?' : '&') + data;
+			}
+			else if(typeof data === 'object') {
+				url += (url.indexOf('?') === -1 ? '?' : '&') + $.param(data, settings.traditional);
+			}
+		}
+
+		if(settings.contentType && settings.contentType !== false && !headers['Content-Type']) {
+			headers['Content-Type'] = settings.contentType;
+		}
+
+		if(typeof AbortController !== 'undefined') {
+			controller = new AbortController();
+		}
+
+		if(settings.timeout > 0) {
+			timeoutId = setTimeout(function () {
+				api.abort('timeout');
+			}, settings.timeout);
+		}
+
+		window.fetch(url, {
+			method : method,
+			headers : headers,
+			body : hasBody ? settings._body : undefined,
+			credentials : settings.xhrFields && settings.xhrFields.withCredentials ? 'include' : 'same-origin',
+			signal : controller ? controller.signal : undefined
+		})
+		.then(function (response) {
+			var xhrLike = {
+				status : response.status,
+				statusText : response.statusText,
+				responseURL : response.url,
+				getResponseHeader : function (name) {
+					return response.headers.get(name);
+				}
+			};
+			var expected = settings.dataType;
+			var contentType = response.headers.get('Content-Type') || '';
+			var reader;
+			if(expected === 'json' || (!expected && contentType.indexOf('json') !== -1)) {
+				reader = response.json();
+			}
+			else {
+				reader = response.text();
+			}
+			return reader.then(function (payload) {
+				if(timeoutId) {
+					clearTimeout(timeoutId);
+				}
+				if(!response.ok) {
+					rejectWith(xhrLike, 'error', response.statusText || 'error');
+					return;
+				}
+				resolveWith(payload, 'success', xhrLike);
+			}, function (error) {
+				if(timeoutId) {
+					clearTimeout(timeoutId);
+				}
+				rejectWith(xhrLike, 'parsererror', error);
+			});
+		})
+		.catch(function (error) {
+			if(timeoutId) {
+				clearTimeout(timeoutId);
+			}
+			if(state !== 'pending') {
+				return;
+			}
+			rejectWith({
+				status : 0,
+				statusText : abortedState || 'error',
+				getResponseHeader : function () { return null; }
+			}, abortedState || 'error', error);
+		});
+
+		return api;
 	};
 	
 	/**
@@ -438,6 +687,11 @@
 		 * @name $.jstree.defaults.core.force_text
 		 */
 		force_text : false,
+		/**
+		 * Dispatch native DOM CustomEvents (`jstree:<event>`) on the tree container. Defaults to `true`
+		 * @name $.jstree.defaults.core.dispatch_events
+		 */
+		dispatch_events : true,
 		/**
 		 * Should the node be toggled if the text is double clicked. Defaults to `true`
 		 * @name $.jstree.defaults.core.dblclick_toggle
@@ -960,11 +1214,23 @@
 		 * @param  {Object} data additional data to pass with the event
 		 */
 		trigger : function (ev, data) {
+			var name, target;
 			if(!data) {
 				data = {};
 			}
 			data.instance = this;
-			this.element.triggerHandler(ev.replace('.jstree','') + '.jstree', data);
+			name = ev.replace('.jstree','');
+			this.element.triggerHandler(name + '.jstree', data);
+			if(this.settings.core && this.settings.core.dispatch_events !== false && typeof window.CustomEvent === 'function') {
+				target = this.element && this.element.length ? this.element[0] : null;
+				if(target) {
+					var customEvent = new window.CustomEvent('jstree:' + name, {
+						detail : data,
+						bubbles : true
+					});
+					target.dispatchEvent(customEvent);
+				}
+			}
 		},
 		/**
 		 * returns the jQuery extended instance container
@@ -1486,7 +1752,7 @@
 					if($.vakata.is_function(s.data)) {
 						s.data = s.data.call(this, obj);
 					}
-					return $.ajax(s)
+					return $.jstree.ajax(s)
 						.done(function (d,t,x) {
 								var type = x.getResponseHeader('Content-Type');
 								if((type && type.indexOf('json') !== -1) || typeof d === "object") {
@@ -7473,7 +7739,7 @@
 						if($.vakata.is_function(s.data)) {
 							s.data = s.data.call(this, toLoad);
 						}
-						return $.ajax(s)
+					return $.jstree.ajax(s)
 							.done(function (data,t,x) {
 									var i, j;
 									if(data) {
@@ -7682,7 +7948,7 @@
 					if (this._data.search.lastRequest) {
 						this._data.search.lastRequest.abort();
 					}
-					this._data.search.lastRequest = $.ajax(a)
+					this._data.search.lastRequest = $.jstree.ajax(a)
 						.fail(function () {
 							this._data.core.last_error = { 'error' : 'ajax', 'plugin' : 'search', 'id' : 'search_01', 'reason' : 'Could not load search parents', 'data' : JSON.stringify(a) };
 							this.settings.core.error.call(this, this._data.core.last_error);

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jsTree Local Launcher</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --line: #d1d5db;
+      --link: #0f6b5b;
+      --link-hover: #0b4f44;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #eef6f4 0%, var(--bg) 45%, #eef2f7 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    main {
+      width: min(760px, 100%);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    code {
+      background: #eef2f7;
+      border: 1px solid #dde4ee;
+      border-radius: 6px;
+      padding: 2px 6px;
+      color: #243042;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>jsTree Local Launcher</h1>
+    <p>Use this page while running <code>php -S 127.0.0.1:8000 -t .</code>.</p>
+    <ul>
+      <li><a href="/demo/basic/index.html">Basic demo</a></li>
+      <li><a href="/demo/module/index.html">Function API demo (module)</a></li>
+      <li><a href="/test/visual/desktop/index.html">Desktop visual test page</a></li>
+      <li><a href="/test/visual/mobile/index.html">Mobile visual test page</a></li>
+      <li><a href="/test/unit/index.html">QUnit test page</a></li>
+    </ul>
+  </main>
+</body>
+</html>

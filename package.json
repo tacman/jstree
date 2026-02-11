@@ -1,10 +1,25 @@
 {
-  "name": "jstree",
+  "name": "@tacman/jstree-esm",
   "title": "jsTree",
   "description": "jQuery tree plugin",
   "version": "3.3.17",
   "homepage": "http://jstree.com",
   "main": "./dist/jstree.js",
+  "module": "./jstree.esm.mjs",
+  "exports": {
+    ".": {
+      "import": "./jstree.esm.mjs",
+      "require": "./dist/jstree.js",
+      "default": "./dist/jstree.js"
+    },
+    "./module": "./jstree.module.mjs",
+    "./esm": "./jstree.esm.mjs",
+    "./browser-module": "./jstree.browser-module.js",
+    "./esm-browser": "./jstree.esm.browser.js",
+    "./jquery-plugin": "./dist/jstree.js",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
   "author": {
     "name": "Ivan Bozhanov",
     "email": "jstree@jstree.com",
@@ -16,6 +31,9 @@
   },
   "bugs": {
     "url": "https://github.com/vakata/jstree/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "license": "MIT",
   "licenses": [
@@ -39,7 +57,7 @@
     "lodash": "^4.17.21"
   },
   "dependencies": {
-    "jquery": "^3.5.0"
+    "jquery": "^4.0.0"
   },
   "npmName": "jstree",
   "npmFileMap": [
