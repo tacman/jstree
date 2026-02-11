@@ -109,23 +109,14 @@
 </head>
 <body data-controller="jstree" data-action="click->jstree#logClick">
 	<h1>🌟 Modern jstree - Beautiful & Plugin-Friendly</h1>
-	
-	<div class="controls">
-		<input type="text" id="search-input" placeholder="🔍 Search nodes..." data-jstree-target="searchInput" data-action="keydown->jstree#search">
-		<button id="search-btn" type="button" data-action="click->jstree#search">Search</button>
-		<button id="clear-btn" type="button" data-action="click->jstree#clearSearch">Clear</button>
-		<button id="expand-btn" type="button" data-action="click->jstree#expandAll">Expand All</button>
-		<button id="collapse-btn" type="button" data-action="click->jstree#collapseAll">Collapse All</button>
-	</div>
 
+	<h2>✅ Checkbox Tree</h2>
 	<div class="controls">
-		<h3>Selection Controls</h3>
+		<strong>Selection Controls</strong>
 		<button id="select-all-btn" type="button" data-action="click->jstree#selectAll">Select All</button>
 		<button id="deselect-all-btn" type="button" data-action="click->jstree#deselectAll">Deselect All</button>
 		<button id="get-selected-btn" type="button" data-action="click->jstree#getSelected">Get Selected</button>
 	</div>
-
-	<h2>✅ Checkbox Tree</h2>
 	<div class="example-grid">
 		<div id="checkbox-tree" class="demo jstree" data-jstree-target="checkboxTree">
 			<ul>
@@ -158,6 +149,13 @@
 	</div>
 
 	<h2>🔍 Searchable Tree</h2>
+	<div class="controls">
+		<input type="text" id="search-input" placeholder="🔍 Search nodes..." data-jstree-target="searchInput" data-action="keydown->jstree#search">
+		<button id="search-btn" type="button" data-action="click->jstree#search">Search</button>
+		<button id="clear-btn" type="button" data-action="click->jstree#clearSearch">Clear</button>
+		<button id="expand-btn" type="button" data-action="click->jstree#expandAll">Expand All</button>
+		<button id="collapse-btn" type="button" data-action="click->jstree#collapseAll">Collapse All</button>
+	</div>
 	<div class="example-grid">
 		<div id="search-tree" class="demo jstree" data-jstree-target="searchTree">
 			<ul>

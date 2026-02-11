@@ -1,2 +1,2 @@
-export * from './jstree.module.mjs';
-export { default } from './jstree.module.mjs';
+export * from '@tacman1123/jstree-esm/module';
+export { default } from '@tacman1123/jstree-esm/module';

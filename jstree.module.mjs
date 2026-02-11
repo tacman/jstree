@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import './dist/jstree.js';
+import '@tacman1123/jstree-esm/jquery-plugin';
 
 function ensureTarget(target) {
   if (target === undefined || target === null) {
