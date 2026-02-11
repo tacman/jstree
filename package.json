@@ -1,5 +1,5 @@
 {
-  "name": "@tacman/jstree-esm",
+  "name": "@tacman1123/jstree-esm",
   "title": "jsTree",
   "description": "jQuery tree plugin",
   "version": "3.4.0",
@@ -54,8 +54,7 @@
     "grunt-contrib-less": "^3.0.0",
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "~1.1.0",
-    "grunt-text-replace": "~0.4.0",
-    "lodash": "^4.17.23"
+    "grunt-text-replace": "~0.4.0"
   },
   "dependencies": {
     "jquery": "^4.0.0"

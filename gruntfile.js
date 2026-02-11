@@ -1,5 +1,4 @@
 /*global module:false, require:false, __dirname:false*/
-var _ = require('lodash');
 
 module.exports = function(grunt) {
   grunt.util.linefeed = "\n";
@@ -30,7 +29,7 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> - (<%= _.map(pkg.licenses, "type").join(", ") %>) */\n',
+        banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> - (<%= (pkg.licenses || []).map(function (license) { return license.type; }).join(", ") %>) */\n',
         preserveComments: false,
         //sourceMap: "dist/jstree.min.map",
         //sourceMappingURL: "jstree.min.map",

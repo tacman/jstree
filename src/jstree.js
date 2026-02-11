@@ -213,6 +213,14 @@
 			settings.jsonp ||
 			settings.fetch === false
 		) {
+			if(!$.ajax) {
+				rejectWith({
+					status : 0,
+					statusText : 'error',
+					getResponseHeader : function () { return null; }
+				}, 'error', new Error('jQuery ajax is unavailable. Use full jQuery or fetch-compatible settings.'));
+				return api;
+			}
 			xhrFallback = $.ajax(settings)
 				.done(function (d, t, x) {
 					resolveWith(d, t, x);

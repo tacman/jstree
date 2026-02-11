@@ -44,7 +44,7 @@ jsTree is still fully available as the classic jQuery plugin (`$(selector).jstre
 A function-based ESM API is available for module-based projects:
 
 ```js
-import { createTree, getTree, callTree, destroyTree } from '@tacman/jstree-esm';
+import { createTree, getTree, callTree, destroyTree } from '@tacman1123/jstree-esm';
 
 const el = document.getElementById('my-tree');
 
@@ -90,7 +90,7 @@ Yes, you can publish from your fork. Use a new package name (the unscoped `jstre
 
 Planned package name for this fork:
 
-- `@tacman/jstree-esm`
+- `@tacman1123/jstree-esm`
 
 Publish steps:
 
