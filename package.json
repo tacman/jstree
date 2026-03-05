@@ -2,7 +2,7 @@
   "name": "@tacman1123/jstree-esm",
   "title": "jsTree",
   "description": "jsTree v4 fork with Stimulus-first API and native DOM events",
-  "version": "4.0.4",
+  "version": "4.1.0",
   "homepage": "https://github.com/tacman/jstree",
   "main": "./src/jstree.js",
   "module": "./jstree.esm.mjs",
