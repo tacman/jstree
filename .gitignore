@@ -12,3 +12,4 @@
 /dist/libs
 /.vscode
 /.idea
+.castor.stub.php
