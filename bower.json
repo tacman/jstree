@@ -3,7 +3,7 @@
 	"license": "MIT",
 	"version": "3.3.17",
 	"main" : [
-		"./dist/jstree.js",
+		"./src/jstree.js",
 		"./dist/themes/default/style.css"
 	],
 	"ignore": [

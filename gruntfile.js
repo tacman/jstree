@@ -80,8 +80,8 @@ module.exports = function(grunt) {
     },
     amd : {
       files: {
-        src: ['dist/jstree.js'],
-        dest: 'dist/jstree.js'
+        src: ['src/jstree.js'],
+        dest: 'src/jstree.js'
       }
     },
     less: {
@@ -197,13 +197,13 @@ module.exports = function(grunt) {
         done = this.async(),
         doxPath = path.resolve(__dirname),
         formatter = [doxPath, 'node_modules', '.bin', 'dox'].join(path.sep);
-    exec(formatter + ' < "dist/jstree.js" > "docs/jstree.json"', {maxBuffer: 5000*1024}, function(error, stout, sterr){
+    exec(formatter + ' < "src/jstree.js" > "docs/jstree.json"', {maxBuffer: 5000*1024}, function(error, stout, sterr){
       if (error) {
         grunt.log.error(formatter);
         grunt.log.error("WARN: "+ error);
       }
       if (!error) {
-        grunt.log.writeln('dist/jstree.js doxxed.');
+        grunt.log.writeln('src/jstree.js doxxed.');
         done();
       }
     });

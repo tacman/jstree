@@ -9,6 +9,9 @@ This repository is a v4 fork of [vakata/jstree](https://github.com/vakata/jstree
 
 The classic jQuery plugin API is still available as a compatibility path.
 
+Core JavaScript source of truth is `src/jstree.js`.
+The `dist/` directory is retained for theme assets only.
+
 ## Install
 
 ```bash

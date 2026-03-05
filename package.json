@@ -4,13 +4,13 @@
   "description": "jsTree v4 fork with Stimulus-first API and native DOM events",
   "version": "4.0.3",
   "homepage": "https://github.com/tacman/jstree",
-  "main": "./dist/jstree.js",
+  "main": "./src/jstree.js",
   "module": "./jstree.esm.mjs",
   "buildName": "jstree",
   "files": [
     "LICENSE-MIT",
     "README.md",
-    "dist/**/*",
+    "dist/themes/**/*",
     "src/**/*",
     "jstree.browser-module.js",
     "jstree.browser-module.mjs",
@@ -23,8 +23,8 @@
   "exports": {
     ".": {
       "import": "./jstree.esm.mjs",
-      "require": "./dist/jstree.js",
-      "default": "./dist/jstree.js"
+      "require": "./src/jstree.js",
+      "default": "./src/jstree.js"
     },
     "./module": "./jstree.module.mjs",
     "./esm": "./jstree.esm.mjs",
@@ -37,7 +37,7 @@
       "default": "./jstree.esm.browser.js"
     },
     "./stimulus": "./jstree.stimulus.mjs",
-    "./jquery-plugin": "./dist/jstree.js",
+    "./jquery-plugin": "./src/jstree.js",
     "./src/*": "./src/*",
     "./dist/themes/*": "./dist/themes/*",
     "./dist/*": "./dist/*",
@@ -93,7 +93,6 @@
     {
       "basePath": "/dist/",
       "files": [
-        "jstree.min.js",
         "themes/**/*.png",
         "themes/**/*.gif",
         "themes/**/*.min.css"
