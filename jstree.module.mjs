@@ -1,5 +1,17 @@
 import $ from 'jquery';
-import '@tacman1123/jstree-esm/jquery-plugin';
+import './src/jstree.js';
+import './src/jstree.changed.js';
+import './src/jstree.checkbox.js';
+import './src/jstree.conditionalselect.js';
+import './src/jstree.contextmenu.js';
+import './src/jstree.dnd.js';
+import './src/jstree.massload.js';
+import './src/jstree.search.js';
+import './src/jstree.sort.js';
+import './src/jstree.state.js';
+import './src/jstree.types.js';
+import './src/jstree.unique.js';
+import './src/jstree.wholerow.js';
 
 function ensureTarget(target) {
   if (target === undefined || target === null) {
