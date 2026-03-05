@@ -1,0 +1,115 @@
+/* DEBUG: Simple modern CSS test */
+
+/* FORCE jstree to stay visible - prevent JS from hiding */
+.jstree,
+.jstree * {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+}
+
+/* Override any hide styles */
+.jstree[style*="display: none"],
+.jstree[style*="visibility: hidden"],
+.jstree[style*="opacity: 0"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.demo {
+  border: 5px solid green !important;
+}
+:root {
+  --jstree-arrow-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%234CAF50'/%3E%3Cpath fill='white' d='M9 16.5L13 12L9 7.5L10.5 6L16 12L10.5 18L9 16.5Z'/%3E%3C/svg%3E");
+  --jstree-folder: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FF6B35' d='M4 6h6l2 2h8c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2z'/%3E%3C/svg%3E");
+  --jstree-file: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232196F3' d='M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z'/%3E%3C/svg%3E");
+}
+
+/* Force override jstree default styles - make everything visible */
+
+/* Make ALL icons visible */
+.jstree-default .jstree-ocl,
+.jstree-ocl,
+.jstree-default .jstree-themeicon,
+.jstree-themeicon,
+.jstree-default .jstree-icon,
+.jstree-icon {
+  background: red !important;
+  border: 2px solid black !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Make sure text is visible */
+.jstree-default .jstree-anchor,
+.jstree-anchor {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: black !important;
+  font-size: 14px !important;
+}
+
+/* Make sure nodes are visible */
+.jstree-default .jstree-node,
+.jstree-node {
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.jstree-default .jstree-node,
+.jstree-node {
+  display: grid !important;
+  grid-template-columns: 20px 20px 1fr !important;
+  align-items: center !important;
+  gap: 4px !important;
+  min-height: 20px !important;
+  white-space: nowrap !important;
+}
+
+.jstree-default .jstree-ocl,
+.jstree-ocl {
+  width: 20px !important;
+  height: 20px !important;
+  background-image: var(--jstree-arrow-right) !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  cursor: pointer !important;
+}
+
+.jstree-default.jstree-open .jstree-ocl,
+.jstree-open .jstree-ocl {
+  transform: rotate(90deg) !important;
+}
+
+.jstree-default .jstree-themeicon,
+.jstree-themeicon {
+  width: 20px !important;
+  height: 20px !important;
+  background-image: var(--jstree-folder) !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.jstree-default.jstree-leaf .jstree-themeicon,
+.jstree-leaf .jstree-themeicon {
+  background-image: var(--jstree-file) !important;
+}
+
+.jstree-default .jstree-children,
+.jstree-children {
+  margin-left: 44px !important;
+  display: none !important;
+}
+
+.jstree-default.jstree-open > .jstree-children,
+.jstree-open > .jstree-children {
+  display: block !important;
+}
