@@ -2,7 +2,7 @@
 
 - `demo/modern/index.html` - modern Stimulus-first demo (recommended)
 - `demo/module/index.html` - module/function API demo
-- `demo/basic/index.html` - legacy jQuery API coverage demo
+- `demo/basic/index.html` - legacy jQuery plugin API coverage demo (event integration in app code should use native `CustomEvent`s)
 
 ## PHP demos moved to new repository
 https://github.com/vakata/jstree-php-demos

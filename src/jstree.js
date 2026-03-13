@@ -54,6 +54,28 @@
 		};
 	}
 
+	function stringifyErrorData(value) {
+		try {
+			return JSON.stringify(value);
+		}
+		catch (e) {
+			return String(value);
+		}
+	}
+
+	function defaultCoreErrorReporter(error) {
+		if (!window.console || !window.console.error) {
+			return;
+		}
+
+		var message = '[jstree] ' + (error && error.reason ? error.reason : 'Unknown error');
+		if (error && error.details && error.details.nodeId !== undefined && error.details.parentId !== undefined) {
+			message += ' (parent id ' + error.details.parentId + ' is missing for node ' + error.details.nodeId + ')';
+		}
+
+		window.console.error(message, error);
+	}
+
 	/**
 	 * holds all jstree related functions and variables, including the actual class and methods to create, access and manipulate instances.
 	 * @name $.jstree
@@ -618,7 +640,7 @@
 		 * a callback called with a single object parameter in the instance's scope when something goes wrong (operation prevented, ajax failed, etc)
 		 * @name $.jstree.defaults.core.error
 		 */
-		error			: $.noop,
+		error			: defaultCoreErrorReporter,
 		/**
 		 * the open / close animation duration in milliseconds - set this to `false` to disable the animation (default is `200`)
 		 * @name $.jstree.defaults.core.animation
@@ -696,7 +718,7 @@
 		 */
 		force_text : false,
 		/**
-		 * Dispatch native DOM CustomEvents (`<event>.jstree` and `jstree:<event>`) on the tree container. Defaults to `true`
+		 * Dispatch native DOM CustomEvents (`<event>.jstree`) on the tree container. Defaults to `true`
 		 * @name $.jstree.defaults.core.dispatch_events
 		 */
 		dispatch_events : true,
@@ -1222,7 +1244,7 @@
 		 * @param  {Object} data additional data to pass with the event
 		 */
 		trigger : function (ev, data) {
-			var name, target, eventName, legacyEventName;
+			var name, target, eventName;
 			if(!data) {
 				data = {};
 			}
@@ -1233,19 +1255,11 @@
 				target = this.element && this.element.length ? this.element[0] : null;
 				if(target) {
 					eventName = name + '.jstree';
-					legacyEventName = 'jstree:' + name;
 					target.dispatchEvent(new window.CustomEvent(eventName, {
 						detail : data,
 						bubbles : true,
 						cancelable : true
 					}));
-					if(legacyEventName !== eventName) {
-						target.dispatchEvent(new window.CustomEvent(legacyEventName, {
-							detail : data,
-							bubbles : true,
-							cancelable : true
-						}));
-					}
 				}
 			}
 		},
@@ -2144,7 +2158,18 @@
 						for(i = 0, j = dat.length; i < j; i++) {
 							if (!m[dat[i].parent.toString()]) {
 								if (typeof inst !== "undefined") {
-									inst._data.core.last_error = { 'error' : 'parse', 'plugin' : 'core', 'id' : 'core_07', 'reason' : 'Node with invalid parent', 'data' : JSON.stringify({ 'id' : dat[i].id.toString(), 'parent' : dat[i].parent.toString() }) };
+									inst._data.core.last_error = {
+										'error' : 'parse',
+										'plugin' : 'core',
+										'id' : 'core_07',
+										'reason' : 'Node with invalid parent',
+										'data' : stringifyErrorData({ 'id' : dat[i].id.toString(), 'parent' : dat[i].parent.toString(), 'node' : dat[i] }),
+										'details' : {
+											'nodeId' : dat[i].id.toString(),
+											'parentId' : dat[i].parent.toString(),
+											'node' : dat[i]
+										}
+									};
 									inst.settings.core.error.call(inst, inst._data.core.last_error);
 								}
 								continue;

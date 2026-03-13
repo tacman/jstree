@@ -78,6 +78,7 @@
       <button id="btn-open">Open all</button>
       <button id="btn-close" class="secondary">Close all</button>
       <button id="btn-select" class="secondary">Select first child</button>
+      <button id="btn-sequence" class="secondary">Run upstream sequence</button>
       <button id="btn-destroy" class="secondary">Destroy</button>
       <button id="btn-create">Recreate</button>
     </div>
@@ -106,7 +107,14 @@
               state: { opened: true },
               children: [
                 { id: 'child-1', text: 'README.md' },
-                { id: 'child-2', text: 'src', children: [{ text: 'jstree.js' }, { text: 'jstree.search.js' }] }
+                {
+                  id: 'child-2',
+                  text: 'src',
+                  children: [
+                    { id: 'grandchild-1', text: 'jstree.js' },
+                    { id: 'grandchild-2', text: 'jstree.search.js' }
+                  ]
+                }
               ]
             }
           ]
@@ -124,6 +132,11 @@
     treeElement.addEventListener('jstree:changed', (event) => {
       const selected = event.detail && event.detail.selected ? event.detail.selected.join(', ') : '(none)';
       write('Native event received: jstree:changed -> ' + selected);
+    });
+
+    treeElement.addEventListener('open_node.jstree', (event) => {
+      const node = event.detail && event.detail.node ? event.detail.node.id : '(unknown)';
+      write('Native event received: open_node.jstree -> ' + node);
     });
 
     makeTree();
@@ -148,6 +161,25 @@
     document.getElementById('btn-destroy').addEventListener('click', () => {
       const removed = destroyTree('#tree');
       write(removed ? 'Destroyed tree.' : 'No tree instance found.');
+    });
+
+    document.getElementById('btn-sequence').addEventListener('click', () => {
+      const tree = getTree('#tree');
+      if (!tree) {
+        write('Tree is not available. Recreate it first.');
+        return;
+      }
+
+      tree.close_all();
+      tree.select_node('grandchild-1', false, true);
+      const preventOpen = tree.is_open('child-2');
+
+      tree.deselect_all(true);
+      tree.close_all();
+      tree.select_node('grandchild-1');
+      const defaultOpen = tree.is_open('child-2');
+
+      write('Sequence result -> prevent_open keeps parent open: ' + preventOpen + '; default select opens parent: ' + defaultOpen);
     });
 
     document.getElementById('btn-create').addEventListener('click', () => {
