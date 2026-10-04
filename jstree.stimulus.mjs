@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { createTree, getTree, destroyTree } from './jstree.browser-module.mjs';
+import { createTree, getTree, destroyTree } from './jstree.module.mjs';
 
 const TREE_EVENTS = [
   ['checkboxTree', 'checkbox', 'changed.jstree', 'Checkbox Changed'],

@@ -64,10 +64,10 @@ This fork keeps jQuery as an internal runtime dependency, but the public event c
 - do not rely on jQuery `.on('*.jstree')` in consuming code;
 - `event.detail` contains the same payload that jsTree methods pass to `trigger`.
 
-For an event like `changed` the tree dispatches:
-
-- `changed.jstree` (primary native `CustomEvent`)
-- `jstree:changed` (legacy native alias)
+For an event like `changed`, the tree dispatches one native `changed.jstree`
+`CustomEvent`. The old `jstree:changed` alias is not emitted. Migrate alias
+listeners to the dotted name; do not register both names for one action.
+Internal jQuery events remain available for plugin compatibility.
 
 ```js
 const el = document.getElementById('tree');
@@ -129,3 +129,14 @@ Then open:
 ## License
 
 MIT. Keep `LICENSE-MIT` and upstream copyright notices.
+
+## Release validation
+
+Run `npm ci`, then `npm run release:check`. The automated DOM tests use jQuery
+4 and exercise the public ESM entry, mutation event counts, dispatch suppression,
+selection, search, checkbox, expansion, and teardown. Before publishing, also
+verify context menus and drag-and-drop in a real browser.
+
+4.2.0 retains jQuery 4 internally. Removing it requires replacing core DOM
+collections, plugin registration, data storage, event delegation, and animation;
+the ESM API is an integration boundary, not a jQuery-free implementation.

@@ -20,7 +20,6 @@
 
 	if($.jstree.plugins.state) { return; }
 
-	var to = false;
 	/**
 	 * stores all defaults for the state plugin
 	 * @name $.jstree.defaults.state
@@ -59,6 +58,12 @@
 		preserve_loaded : false
 	};
 	$.jstree.plugins.state = function (options, parent) {
+		var to = false;
+		this.teardown = function () {
+			clearTimeout(to);
+			to = false;
+			parent.teardown.call(this);
+		};
 		this.bind = function () {
 			parent.bind.call(this);
 			var bind = function () {

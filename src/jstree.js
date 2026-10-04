@@ -1,5 +1,5 @@
 /*!
- * jsTree {{VERSION}}
+ * jsTree 4.2.0
  * http://jstree.com/
  *
  * Copyright (c) 2014 Ivan Bozhanov (http://vakata.com)
@@ -85,7 +85,7 @@
 		 * specifies the jstree version in use
 		 * @name $.jstree.version
 		 */
-		version : '{{VERSION}}',
+		version : '4.2.0',
 		/**
 		 * holds all the default options used when creating new instances
 		 * @name $.jstree.defaults

@@ -34,7 +34,7 @@ test('select_node emits native changed event payload', function(assert) {
       instance.select_node('child-1', false, true);
 
       ok(!!changedDetail, 'changed.jstree native event is dispatched');
-      ok(!!changedAliasDetail, 'jstree:changed native alias is dispatched');
+      ok(!changedAliasDetail, 'legacy alias is not dispatched');
       equal(changedDetail.action, 'select_node', 'event action is select_node');
       ok(changedDetail.selected.indexOf('child-1') !== -1, 'selected list includes the node id');
       equal(changedDetail.instance, instance, 'event detail includes instance');
